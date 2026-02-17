@@ -1,0 +1,108 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SearchBar from "../../components/SearchBar.astro";
+import { experiencias } from "../../data/experiencias";
+---
+
+<BaseLayout>
+
+<section class="max-w-7xl mx-auto px-8 py-20">
+  <h1 class="text-4xl font-bold mb-4">
+    Experiencias Sostenibles
+  </h1>
+  <p class="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl">
+    Descubre actividades de ecoturismo verificadas en todo Ecuador. Filtra por categoría o busca por nombre.
+  </p>
+
+  <SearchBar />
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8" id="experiences-grid">
+    {experiencias.map((e) => (
+      <a
+        href={`/experiencias/${e.slug}`}
+        class="block experience-card"
+        data-title={e.title.toLowerCase()}
+        data-category={e.category}
+        data-location={e.location.toLowerCase()}
+      >
+        <div class="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg hover:scale-[1.02] transition">
+          <div class="relative">
+            <img src={e.hero} class="h-60 w-full object-cover" />
+            <span class="absolute top-3 left-3 bg-forest text-white text-xs font-semibold px-3 py-1 rounded-full capitalize">
+              {e.category}
+            </span>
+          </div>
+          <div class="p-5">
+            <h4 class="font-semibold text-lg text-gray-900 dark:text-white mb-1">
+              {e.title}
+            </h4>
+            <div class="flex items-center justify-between">
+              <span class="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                {e.location}
+              </span>
+              <span class="text-forest font-bold text-lg">${e.price}</span>
+            </div>
+          </div>
+        </div>
+      </a>
+    ))}
+  </div>
+
+  <p id="no-results" class="hidden text-center text-gray-500 dark:text-gray-400 py-12 text-lg">
+    No se encontraron experiencias. Intenta con otro término de búsqueda.
+  </p>
+</section>
+
+<script>
+  const searchInput = document.getElementById("search-input");
+  const grid = document.getElementById("experiences-grid");
+  const cards = grid.querySelectorAll(".experience-card");
+  const buttons = document.querySelectorAll("#category-filters button");
+  const noResults = document.getElementById("no-results");
+
+  let activeCategory = "todas";
+
+  function filterCards() {
+    const query = searchInput.value.toLowerCase().trim();
+    let visible = 0;
+
+    cards.forEach((card) => {
+      const title = card.dataset.title;
+      const category = card.dataset.category;
+      const location = card.dataset.location;
+
+      const matchesSearch = !query || title.includes(query) || location.includes(query);
+      const matchesCategory = activeCategory === "todas" || category === activeCategory;
+
+      if (matchesSearch && matchesCategory) {
+        card.style.display = "";
+        visible++;
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    noResults.classList.toggle("hidden", visible > 0);
+  }
+
+  searchInput.addEventListener("input", filterCards);
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      activeCategory = btn.dataset.category;
+
+      buttons.forEach((b) => {
+        b.className = "px-5 py-2 rounded-full text-sm font-medium transition bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-forest hover:text-white";
+      });
+      btn.className = "px-5 py-2 rounded-full text-sm font-medium transition bg-forest text-white";
+
+      filterCards();
+    });
+  });
+</script>
+
+</BaseLayout>

@@ -1,0 +1,53 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout>
+
+<section class="max-w-3xl mx-auto px-8 py-24 text-center">
+  <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-12">
+    <!-- Check icon -->
+    <div class="w-20 h-20 bg-forest rounded-full flex items-center justify-center mx-auto mb-8">
+      <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+      ¡Reserva confirmada!
+    </h1>
+
+    <p class="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-lg mx-auto">
+      Tu reserva ha sido procesada exitosamente. Recibirás un correo electrónico con todos los detalles de tu viaje.
+    </p>
+
+    <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl p-6 mb-8 text-left">
+      <h3 class="font-bold text-gray-900 dark:text-white mb-3">Próximos pasos</h3>
+      <ul class="space-y-3 text-gray-600 dark:text-gray-400">
+        <li class="flex items-start gap-3">
+          <span class="w-6 h-6 bg-forest text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</span>
+          Revisa tu correo electrónico con la confirmación y el itinerario detallado
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-6 h-6 bg-forest text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</span>
+          Nuestro equipo se pondrá en contacto 48 horas antes del viaje
+        </li>
+        <li class="flex items-start gap-3">
+          <span class="w-6 h-6 bg-forest text-white rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</span>
+          Prepara tu equipaje con ropa cómoda y protector solar
+        </li>
+      </ul>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="/paquetes" class="bg-forest text-white px-8 py-3 rounded-full font-medium hover:bg-green-700 transition">
+        Ver más paquetes
+      </a>
+      <a href="/" class="bg-gray-200 dark:bg-gray-600 text-gray-900 dark:text-white px-8 py-3 rounded-full font-medium hover:bg-gray-300 transition">
+        Volver al inicio
+      </a>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>

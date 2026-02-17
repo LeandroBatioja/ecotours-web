@@ -1,0 +1,57 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { experiencias } from "../../data/experiencias";
+
+/**
+ * src\pages\experiencias\[slug].astro
+ */
+export function getStaticPaths() {
+  return experiencias.map((e) => ({
+    params: { slug: e.slug },
+    props: { experiencia: e },
+  }));
+}
+
+const { experiencia } = Astro.props;
+---
+
+<BaseLayout>
+
+<section class="relative h-[60vh]">
+  <img
+    src={experiencia.hero}
+    class="absolute inset-0 w-full h-full object-cover"
+  />
+  <div class="absolute inset-0 bg-black/50"></div>
+
+  <div class="relative z-10 h-full flex items-center px-16 text-white">
+    <h1 class="text-5xl font-bold">{experiencia.title}</h1>
+  </div>
+</section>
+
+<section class="max-w-5xl mx-auto px-8 py-16">
+  <p class="text-lg">{experiencia.description}</p>
+</section>
+
+<section class="max-w-7xl mx-auto px-8 pb-16">
+  <div class="grid grid-cols-3 gap-6">
+    {experiencia.gallery.map((img) => (
+      <img
+        src={img}
+        class="rounded-2xl h-64 w-full object-cover"
+      />
+    ))}
+  </div>
+</section>
+
+<section class="max-w-5xl mx-auto px-8 pb-24">
+  <div class="aspect-video rounded-2xl overflow-hidden">
+    <iframe
+      src={experiencia.video}
+      class="w-full h-full"
+      allowfullscreen
+    ></iframe>
+  </div>
+</section>
+
+</BaseLayout>

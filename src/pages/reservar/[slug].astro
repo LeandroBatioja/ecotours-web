@@ -1,0 +1,189 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { paquetes } from "../../data/paquetes";
+
+export function getStaticPaths() {
+  return paquetes.map((p) => ({
+    params: { slug: p.slug },
+    props: { paquete: p },
+  }));
+}
+
+const { paquete } = Astro.props;
+---
+
+<BaseLayout>
+
+<section class="max-w-6xl mx-auto px-8 py-16">
+  <h1 class="text-3xl font-bold mb-2 text-gray-900 dark:text-white">Reservar: {paquete.title}</h1>
+  <p class="text-gray-500 dark:text-gray-400 mb-10">{paquete.duration} · Desde ${paquete.price} por persona</p>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+    <!-- FORMULARIO -->
+    <div class="lg:col-span-2">
+      <form id="booking-form" class="space-y-8">
+
+        <!-- Datos del viajero -->
+        <div>
+          <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Datos del viajero</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre completo</label>
+              <input type="text" name="name" required
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-forest focus:outline-none" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Correo electrónico</label>
+              <input type="email" name="email" required
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-forest focus:outline-none" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Teléfono</label>
+              <input type="tel" name="phone" required
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-forest focus:outline-none" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Número de viajeros</label>
+              <select name="travelers" required
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-forest focus:outline-none">
+                <option value="1">1 persona</option>
+                <option value="2" selected>2 personas</option>
+                <option value="3">3 personas</option>
+                <option value="4">4 personas</option>
+                <option value="5">5+ personas</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Fecha de inicio</label>
+              <input type="date" name="date" required
+                class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-forest focus:outline-none" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Método de pago -->
+        <div>
+          <h2 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Método de pago</h2>
+          <div class="space-y-4">
+            <div class="flex gap-4">
+              <label class="flex items-center gap-3 px-5 py-3 rounded-xl border-2 border-forest bg-green-50 dark:bg-green-900/20 cursor-pointer flex-1">
+                <input type="radio" name="payment" value="card" checked class="text-forest" />
+                <div>
+                  <p class="font-medium text-gray-900 dark:text-white">Tarjeta de crédito/débito</p>
+                  <p class="text-xs text-gray-500">Visa, Mastercard, American Express</p>
+                </div>
+              </label>
+              <label class="flex items-center gap-3 px-5 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-600 cursor-pointer flex-1 hover:border-forest transition">
+                <input type="radio" name="payment" value="transfer" class="text-forest" />
+                <div>
+                  <p class="font-medium text-gray-900 dark:text-white">Transferencia bancaria</p>
+                  <p class="text-xs text-gray-500">Depósito directo</p>
+                </div>
+              </label>
+            </div>
+
+            <div id="card-fields" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Número de tarjeta</label>
+                <input type="text" placeholder="1234 5678 9012 3456" maxlength="19"
+                  class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-forest focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Fecha de expiración</label>
+                <input type="text" placeholder="MM/AA" maxlength="5"
+                  class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-forest focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">CVV</label>
+                <input type="text" placeholder="123" maxlength="4"
+                  class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-forest focus:outline-none" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" id="submit-btn"
+          class="w-full bg-forest text-white py-4 rounded-full text-lg font-bold hover:bg-green-700 transition">
+          Confirmar y pagar ${paquete.price}
+        </button>
+      </form>
+    </div>
+
+    <!-- RESUMEN -->
+    <div>
+      <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-6 sticky top-24">
+        <img src={paquete.image} class="w-full h-40 object-cover rounded-2xl mb-4" />
+        <h3 class="font-bold text-lg text-gray-900 dark:text-white mb-2">{paquete.title}</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{paquete.duration}</p>
+
+        <div class="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-3">
+          <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+            <span>Precio por persona</span>
+            <span>${paquete.price}</span>
+          </div>
+          <div class="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+            <span>Viajeros</span>
+            <span id="traveler-count">×2</span>
+          </div>
+          <div class="border-t border-gray-200 dark:border-gray-700 pt-3 flex justify-between font-bold text-lg text-gray-900 dark:text-white">
+            <span>Total</span>
+            <span id="total-price" class="text-forest">${paquete.price * 2}</span>
+          </div>
+        </div>
+
+        <div class="mt-4 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+          <svg class="w-4 h-4 text-forest" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+          Pago seguro y cifrado
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script define:vars={{ price: paquete.price }}>
+  const travelersSelect = document.querySelector('[name="travelers"]');
+  const travelerCount = document.getElementById("traveler-count");
+  const totalPrice = document.getElementById("total-price");
+  const submitBtn = document.getElementById("submit-btn");
+
+  travelersSelect.addEventListener("change", () => {
+    const count = parseInt(travelersSelect.value);
+    travelerCount.textContent = `×${count}`;
+    const total = price * count;
+    totalPrice.textContent = `$${total}`;
+    submitBtn.textContent = `Confirmar y pagar $${total}`;
+  });
+
+  // Toggle card fields
+  const paymentRadios = document.querySelectorAll('[name="payment"]');
+  const cardFields = document.getElementById("card-fields");
+  paymentRadios.forEach((radio) => {
+    radio.addEventListener("change", () => {
+      cardFields.style.display = radio.value === "card" ? "" : "none";
+      radio.closest("label").classList.add("border-forest", "bg-green-50", "dark:bg-green-900/20");
+      radio.closest("label").classList.remove("border-gray-200", "dark:border-gray-600");
+      paymentRadios.forEach((other) => {
+        if (other !== radio) {
+          other.closest("label").classList.remove("border-forest", "bg-green-50", "dark:bg-green-900/20");
+          other.closest("label").classList.add("border-gray-200", "dark:border-gray-600");
+        }
+      });
+    });
+  });
+
+  // Form submit
+  document.getElementById("booking-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    submitBtn.textContent = "Procesando...";
+    submitBtn.disabled = true;
+    setTimeout(() => {
+      window.location.href = "/reservar/confirmacion";
+    }, 1500);
+  });
+</script>
+
+</BaseLayout>

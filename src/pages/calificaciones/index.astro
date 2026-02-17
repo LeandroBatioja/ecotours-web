@@ -1,0 +1,84 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ReviewCard from "../../components/ReviewCard.astro";
+import StarRating from "../../components/StarRating.astro";
+import { reviews } from "../../data/reviews";
+
+const avgRating = (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1);
+const totalReviews = reviews.length;
+const fiveStars = reviews.filter((r) => r.rating === 5).length;
+const fourStars = reviews.filter((r) => r.rating === 4).length;
+---
+
+<BaseLayout>
+
+<!-- HERO -->
+<section class="relative h-[40vh]">
+  <img
+    src="https://images.unsplash.com/photo-1501785888041-af3ef285b470"
+    class="absolute inset-0 w-full h-full object-cover"
+  />
+  <div class="absolute inset-0 bg-black/50"></div>
+  <div class="relative z-10 h-full flex flex-col items-center justify-center text-center text-white px-6">
+    <h1 class="text-5xl font-bold mb-4">Calificaciones Verificadas</h1>
+    <p class="text-xl max-w-2xl opacity-90">
+      Opiniones reales de viajeros que vivieron la experiencia EcoTours
+    </p>
+  </div>
+</section>
+
+<!-- ESTADÍSTICAS -->
+<section class="max-w-7xl mx-auto px-8 py-16">
+  <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-8 mb-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+      <div class="text-center">
+        <p class="text-6xl font-bold text-forest">{avgRating}</p>
+        <div class="flex justify-center mt-2">
+          <StarRating rating={Math.round(parseFloat(avgRating))} size="w-6 h-6" />
+        </div>
+        <p class="text-gray-500 dark:text-gray-400 mt-2">{totalReviews} calificaciones</p>
+      </div>
+
+      <div class="md:col-span-2 space-y-3">
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-600 dark:text-gray-400 w-20">5 estrellas</span>
+          <div class="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+            <div class="bg-ecoOrange h-3 rounded-full" style={`width: ${(fiveStars / totalReviews) * 100}%`}></div>
+          </div>
+          <span class="text-sm text-gray-600 dark:text-gray-400 w-8">{fiveStars}</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-600 dark:text-gray-400 w-20">4 estrellas</span>
+          <div class="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+            <div class="bg-ecoOrange h-3 rounded-full" style={`width: ${(fourStars / totalReviews) * 100}%`}></div>
+          </div>
+          <span class="text-sm text-gray-600 dark:text-gray-400 w-8">{fourStars}</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-sm text-gray-600 dark:text-gray-400 w-20">3 estrellas</span>
+          <div class="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+            <div class="bg-ecoOrange h-3 rounded-full" style="width: 0%"></div>
+          </div>
+          <span class="text-sm text-gray-600 dark:text-gray-400 w-8">0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRID DE REVIEWS -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {reviews.map((r) => (
+      <ReviewCard
+        name={r.name}
+        avatar={r.avatar}
+        rating={r.rating}
+        comment={r.comment}
+        destinationName={r.destinationName}
+        date={r.date}
+        verified={r.verified}
+      />
+    ))}
+  </div>
+</section>
+
+</BaseLayout>

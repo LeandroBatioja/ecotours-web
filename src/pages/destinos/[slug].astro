@@ -1,0 +1,94 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EcoMap from "../../components/EcoMap.astro";
+import ReviewCard from "../../components/ReviewCard.astro";
+import StarRating from "../../components/StarRating.astro";
+import { destinos } from "../../data/destinos";
+import { reviews } from "../../data/reviews";
+
+export function getStaticPaths() {
+  return destinos.map((d) => ({
+    params: { slug: d.slug },
+    props: { destino: d },
+  }));
+}
+
+const { destino } = Astro.props;
+const destinoReviews = reviews.filter((r) => r.destination === destino.slug);
+---
+
+<BaseLayout>
+
+<section class="relative h-[60vh]">
+  <img src={destino.hero} class="absolute inset-0 w-full h-full object-cover" />
+  <div class="absolute inset-0 bg-black/50"></div>
+
+  <div class="relative z-10 h-full flex items-end px-6 pb-12 text-white">
+    <div>
+      <h1 class="text-4xl font-bold">{destino.title}</h1>
+      <p class="mt-2">{destino.location}</p>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-3xl mx-auto px-6 py-14">
+  <p class="text-lg">{destino.description}</p>
+</section>
+
+{destino.gallery.length > 0 && (
+  <section class="max-w-6xl mx-auto px-6 pb-16">
+    <h2 class="text-2xl font-bold mb-6">Galería</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {destino.gallery.map((img) => (
+        <img src={img} class="rounded-2xl h-64 w-full object-cover" />
+      ))}
+    </div>
+  </section>
+)}
+
+{destino.video && (
+  <section class="max-w-4xl mx-auto px-6 pb-16">
+    <h2 class="text-2xl font-bold mb-6">Video</h2>
+    <div class="aspect-video rounded-2xl overflow-hidden">
+      <iframe src={destino.video} class="w-full h-full" allowfullscreen></iframe>
+    </div>
+  </section>
+)}
+
+<section class="max-w-4xl mx-auto px-6 pb-24">
+  <h2 class="text-2xl font-bold mb-4">Cómo llegar</h2>
+
+  <EcoMap lat={destino.lat} lng={destino.lng} />
+
+  <a
+    href={`https://www.google.com/maps?q=${destino.lat},${destino.lng}`}
+    target="_blank"
+    class="inline-block mt-6 bg-forest text-white px-8 py-3 rounded-full"
+  >
+    Abrir en Google Maps
+  </a>
+</section>
+
+{destinoReviews.length > 0 && (
+  <section class="max-w-4xl mx-auto px-6 pb-24">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl font-bold">Calificaciones verificadas</h2>
+      <a href="/calificaciones" class="text-forest font-medium hover:underline">Ver todas →</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {destinoReviews.map((r) => (
+        <ReviewCard
+          name={r.name}
+          avatar={r.avatar}
+          rating={r.rating}
+          comment={r.comment}
+          destinationName={r.destinationName}
+          date={r.date}
+          verified={r.verified}
+        />
+      ))}
+    </div>
+  </section>
+)}
+
+</BaseLayout>

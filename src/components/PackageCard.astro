@@ -1,0 +1,35 @@
+---
+const { title, image, slug, price, duration, destinations } = Astro.props;
+---
+
+<a href={`/paquetes/${slug}`} class="block">
+  <div class="bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg hover:scale-[1.02] transition">
+    <div class="relative">
+      <img src={image} class="h-56 w-full object-cover" />
+      <span class="absolute top-3 right-3 bg-ecoOrange text-white text-sm font-bold px-4 py-1.5 rounded-full">
+        ${price}
+      </span>
+    </div>
+    <div class="p-5">
+      <h3 class="font-bold text-xl text-gray-900 dark:text-white mb-2">
+        {title}
+      </h3>
+      <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-3">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        {duration}
+      </div>
+      <div class="flex flex-wrap gap-2 mb-4">
+        {destinations.map((d) => (
+          <span class="bg-green-100 dark:bg-green-900 text-forest text-xs px-2.5 py-1 rounded-full">
+            {d}
+          </span>
+        ))}
+      </div>
+      <span class="text-forest font-medium">
+        Ver paquete →
+      </span>
+    </div>
+  </div>
+</a>

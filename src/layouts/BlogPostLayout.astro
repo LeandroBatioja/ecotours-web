@@ -1,0 +1,39 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+const { frontmatter } = Astro.props;
+/** src\layouts\BlogPostLayout.astro */
+---
+
+<BaseLayout>
+  <!-- HERO DEL ARTÍCULO -->
+  <section class="bg-gradient-to-b from-green-50 to-white py-20">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <h1 class="text-4xl font-bold text-gray-900 mb-4">
+        {frontmatter.title}
+      </h1>
+      <p class="text-gray-600 text-lg">
+        {frontmatter.description}
+      </p>
+    </div>
+  </section>
+
+  <!-- CONTENIDO -->
+  <section class="max-w-3xl mx-auto px-6 pb-24">
+    <article
+      class="
+        prose
+        prose-lg
+        prose-headings:text-gray-900
+        prose-headings:font-bold
+        prose-p:text-gray-700
+        prose-li:marker:text-forest
+        prose-strong:text-gray-900
+        prose-a:text-forest
+        prose-a:no-underline
+        hover:prose-a:underline
+      "
+    >
+      <slot />
+    </article>
+  </section>
+</BaseLayout>

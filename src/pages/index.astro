@@ -1,11 +1,142 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import DestinationCard from "../components/DestinationCard.astro";
+import ExperienceCard from "../components/ExperienceCard.astro";
+import PackageCard from "../components/PackageCard.astro";
+import ReviewCard from "../components/ReviewCard.astro";
+import EcoMap from "../components/EcoMap.astro";
+import { destinos } from "../data/destinos";
+import { experiencias } from "../data/experiencias";
+import { paquetes } from "../data/paquetes";
+import { reviews } from "../data/reviews";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout>
+
+<!-- HERO -->
+<section class="relative h-[85vh]">
+  <img
+    src="https://images.unsplash.com/photo-1501785888041-af3ef285b470"
+    class="absolute inset-0 w-full h-full object-cover"
+  />
+  <div class="absolute inset-0 bg-black/40"></div>
+
+  <div class="relative z-10 h-full flex flex-col items-center justify-center text-center text-white px-6">
+    <h1 class="text-5xl font-bold leading-tight max-w-4xl">
+      Explora.<br />
+      Conecta con la naturaleza.<br />
+      Conserva el futuro.
+    </h1>
+
+    <div class="mt-10 flex gap-6">
+      <a href="/destinos" class="bg-forest px-8 py-3 rounded-full hover:bg-green-700 transition">
+        Explorar destinos
+      </a>
+      <a href="/experiencias" class="bg-white text-gray-900 px-8 py-3 rounded-full hover:bg-gray-100 transition">
+        Buscar experiencias
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- DESTINOS POPULARES -->
+<section class="max-w-7xl mx-auto px-8 py-20">
+  <div class="flex items-center justify-between mb-10">
+    <h2 class="text-3xl font-bold">Destinos Populares en Ecuador</h2>
+    <a href="/destinos" class="text-forest font-medium hover:underline">Ver todos →</a>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    {destinos.slice(0, 4).map((d) => (
+      <DestinationCard
+        title={d.title}
+        image={d.hero}
+        slug={d.slug}
+      />
+    ))}
+  </div>
+</section>
+
+<!-- EXPERIENCIAS -->
+<section class="bg-white dark:bg-gray-800 py-20">
+  <div class="max-w-7xl mx-auto px-8">
+    <div class="flex items-center justify-between mb-10">
+      <h2 class="text-3xl font-bold">Experiencias Sostenibles</h2>
+      <a href="/experiencias" class="text-forest font-medium hover:underline">Buscar experiencias →</a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      {experiencias.slice(0, 3).map((e) => (
+        <ExperienceCard
+          title={e.title}
+          image={e.hero}
+          slug={e.slug}
+          category={e.category}
+          location={e.location}
+          price={e.price}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- PAQUETES DESTACADOS -->
+<section class="max-w-7xl mx-auto px-8 py-20">
+  <div class="flex items-center justify-between mb-10">
+    <h2 class="text-3xl font-bold">Paquetes Turísticos</h2>
+    <a href="/paquetes" class="text-forest font-medium hover:underline">Ver todos →</a>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+    {paquetes.slice(0, 3).map((p) => (
+      <PackageCard
+        title={p.title}
+        image={p.image}
+        slug={p.slug}
+        price={p.price}
+        duration={p.duration}
+        destinations={p.destinations}
+      />
+    ))}
+  </div>
+</section>
+
+<!-- CALIFICACIONES -->
+<section class="bg-white dark:bg-gray-800 py-20">
+  <div class="max-w-7xl mx-auto px-8">
+    <div class="flex items-center justify-between mb-10">
+      <h2 class="text-3xl font-bold">Lo que dicen nuestros viajeros</h2>
+      <a href="/calificaciones" class="text-forest font-medium hover:underline">Ver todas →</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {reviews.slice(0, 3).map((r) => (
+        <ReviewCard
+          name={r.name}
+          avatar={r.avatar}
+          rating={r.rating}
+          comment={r.comment}
+          destinationName={r.destinationName}
+          date={r.date}
+          verified={r.verified}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- MAPA INTERACTIVO -->
+<section class="max-w-7xl mx-auto px-8 py-20">
+  <h2 class="text-3xl font-bold mb-6">
+    Explora destinos en el mapa
+  </h2>
+
+  <p class="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl">
+    Descubre experiencias de ecoturismo verificadas directamente en el mapa.
+  </p>
+
+  <EcoMap />
+</section>
+
+</BaseLayout>
